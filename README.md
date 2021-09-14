@@ -30,6 +30,7 @@ The function in the modifier __@shortkey__ will be called repeatedly while the k
 <button v-shortkey.once="['ctrl', 'alt', 'o']" @shortkey="theAction()">Open</button>
 ```
 
+
 #### Multi keys
 ```html
 <button v-shortkey="{up: ['arrowup'], down: ['arrowdown']}" @shortkey="theAction">Joystick</button>
@@ -55,7 +56,7 @@ You can point the focus with the shortcut easily.
 ```
 
 #### Push button
-Sometimes you may need a shortcut works as a push button. It calls the function one time when you click the button. When you release the shortcut, it calls the same function again like a toggle. In these cases, insert the "push" modifier.
+Sometimes you may need a shortcut works as a push button. It calls the function one time until you release the shortcut. When you release the shortcut, it call the same function again like a toggle. In these cases, insert the "push" modifier.
 
 The example below shows how to do this
 ```html
@@ -66,13 +67,6 @@ The example below shows how to do this
 Use the modifier `native` to catch the event.
 ```html
  <my-component v-shortkey="['ctrl', 'alt', 'o']" @shortkey.native="theAction()"></my-component>
-```
-
-#### Multiple listeners
-Use the modifier `propagate` to let the event propagate to other listeners
-```html
- <my-component v-shortkey="['ctrl', 'alt', 'o']" @shortkey.propagate="anAction()"></my-component>
- <my-component v-shortkey="['ctrl', 'alt', 'o']" @shortkey.propagate="aDifferentAction()"></my-component>
 ```
 
 #### Key list
@@ -148,28 +142,6 @@ With the dynamism offered by Vue, you can easily create shortcuts dynamically
   </a>
 </li>
 ```
-
-#### Integrating with Nuxt
-
-Create `/plugins/vue-shortkey.js` and add the following to it
-
-```javascript
-import Vue from 'vue'
-const ShortKey = require('vue-shortkey')
-
-// add any custom shortkey config settings here
-Vue.use(ShortKey, { prevent: ['input', 'textarea'] })
-
-export default ShortKey
-```
-
-Load the plugin in `nuxt.config.js`:
-
-```javascript
-plugins: [ { src: '@/plugins/vue-shortkey.js', mode: 'client' }]
-```
-
-The `mode: 'client'` is necessary to prevent Nuxt from loading the plugin during server-side rendering (SSR).
 
 ### Unit Test
 ```
