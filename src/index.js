@@ -116,9 +116,15 @@ const dispatchShortkeyEvent = (pKey) => {
   if (mapFunctions[pKey].key) e.srcKey = mapFunctions[pKey].key
   const elm = mapFunctions[pKey].el
   if (!mapFunctions[pKey].propagte) {
-    elm[elm.length - 1].dispatchEvent(e)
+    if(document.contains(elm[elm.length - 1])) {
+      elm[elm.length - 1].dispatchEvent(e)
+    }
   } else {
-    elm.forEach(elmItem => elmItem.dispatchEvent(e))
+    elm.forEach(elmItem => {
+      if(document.contains(elmItem)) {
+        elmItem.dispatchEvent(e)
+      }
+    })
   }
 }
 
