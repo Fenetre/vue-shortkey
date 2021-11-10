@@ -1,6 +1,6 @@
 import 'element-matches';
 import 'custom-event-polyfill';
-
+/* eslint-disable */
 let ShortKey = {}
 let mapFunctions = {}
 let objAvoided = []
@@ -42,22 +42,22 @@ const unbindValue = (value, el) => {
   }
 }
 
-ShortKey.install = (Vue, options) => {
+ShortKey.install = (app, options) => {
   elementAvoided = [...(options && options.prevent ? options.prevent : [])]
-  Vue.directive('shortkey', {
-    bind: (el, binding, vnode) => {
+  app.directive('shortkey', {
+    beforeMount: (el, binding, vnode) => {
       // Mapping the commands
       const value = parseValue(binding.value)
       bindValue(value, el, binding, vnode)
     },
-    update: (el, binding, vnode) => {
+    updated: (el, binding, vnode) => {
       const oldValue = parseValue(binding.oldValue)
       unbindValue(oldValue, el)
 
       const newValue = parseValue(binding.value)
       bindValue(newValue, el, binding, vnode)
     },
-    unbind: (el, binding) => {
+    unmounted: (el, binding) => {
       const value = parseValue(binding.value)
       unbindValue(value, el)
     }

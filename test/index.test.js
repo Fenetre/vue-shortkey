@@ -1,13 +1,15 @@
 import './Pollyfills'
 import find from  'array.prototype.find'
 import {expect} from 'chai'
-import Vue from 'vue'
+import { createApp } from 'vue'
 import Shortkey from '../src/index.js'
 
 find.shim()
 
-Vue.use(Shortkey, { prevent: ['.disableshortkey', '.disableshortkey textarea'] })
-const VM = template => new Vue({
+let app = createApp();
+
+app.use(Shortkey, { prevent: ['.disableshortkey', '.disableshortkey textarea'] })
+const VM = template => createApp({
   template,
   data() {
     return {
@@ -93,14 +95,12 @@ describe('functionnal tests', () => {
       document.dispatchEvent(keyup)
 
       expect(vm.called).to.be.true
-      vm.$destroy()
     })
 
     it('unbind simple events', () => {
       const vm = new VM('<div @shortkey="foo" v-shortkey="[\'q\']"></div>')
       vm.$mount(createDiv())
 
-      vm.$destroy()
 
       const keydown = createEvent('keydown')
       keydown.key = 'q'
@@ -119,7 +119,6 @@ describe('functionnal tests', () => {
       const stubFoo = sinon.stub(vm, 'foo').callsFake(fn => {
         expect(fn.srcKey).to.equal('option1')
         stubFoo.restore()
-        vm.$destroy()
         done()
       })
       vm.$mount(createDiv())
@@ -138,7 +137,6 @@ describe('functionnal tests', () => {
     it('unbind event with object key', () => {
       const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"></div>')
       vm.$mount(createDiv())
-      vm.$destroy()
 
       const keydown = createEvent('keydown')
       keydown.key = 'q'
@@ -171,7 +169,6 @@ describe('functionnal tests', () => {
       document.dispatchEvent(keyup)
 
       expect(vm.called).to.be.false
-      vm.$destroy()
     })
 
     it('does not trigger events when its class is in the prevent list', () => {
@@ -191,7 +188,6 @@ describe('functionnal tests', () => {
       document.dispatchEvent(keyup)
 
       expect(vm.called).to.be.false
-      vm.$destroy()
     })
 
     it('does not trigger events when one of its classes is in the prevent list', () => {
@@ -211,7 +207,6 @@ describe('functionnal tests', () => {
       document.dispatchEvent(keyup)
 
       expect(vm.called).to.be.false
-      vm.$destroy()
     })
 
     it('does not trigger events when it gets matched by one item in the prevent list', () => {
@@ -231,7 +226,6 @@ describe('functionnal tests', () => {
       document.dispatchEvent(keyup)
 
       expect(vm.called).to.be.false
-      vm.$destroy()
     })
 
     it('does trigger events when only the parent element gets matched by one item in the prevent list', () => {
@@ -251,7 +245,6 @@ describe('functionnal tests', () => {
       document.dispatchEvent(keyup)
 
       expect(vm.called).to.be.true
-      vm.$destroy()
     })
 
     it('listen for keydown and dispatch event with object key', () => {
@@ -271,7 +264,6 @@ describe('functionnal tests', () => {
       document.dispatchEvent(keyup)
 
       expect(vm.called).to.be.false
-      vm.$destroy()
     })
   })
 
@@ -293,7 +285,6 @@ describe('functionnal tests', () => {
 
     const buttonInput = vm.$el.querySelector('button')
     expect(document.activeElement == buttonInput).to.be.true
-    vm.$destroy()
   })
 
   it('Bring push button with .push modifier', () => {
@@ -312,7 +303,6 @@ describe('functionnal tests', () => {
 
     expect(spyFoo.callCount).to.equal(2)
     spyFoo.restore()
-    vm.$destroy()
   })
 
   it('Testing delete key', () => {
@@ -328,7 +318,6 @@ describe('functionnal tests', () => {
     document.dispatchEvent(keyup)
 
     expect(vm.called).to.be.true
-    vm.$destroy()
   })
 
   it('Testing ? key', () => {
@@ -346,7 +335,6 @@ describe('functionnal tests', () => {
     document.dispatchEvent(keyup)
 
     expect(vm.called).to.be.true
-    vm.$destroy()
   })
 
   it("Update the binding", (done) => {
@@ -374,7 +362,6 @@ describe('functionnal tests', () => {
       document.dispatchEvent(keyup2)
 
       expect(vm.calledBubble).to.be.true
-      vm.$destroy()
       done()
     })
   })
@@ -390,6 +377,5 @@ describe('functionnal tests', () => {
 
     expect(vm.called).to.be.true
     expect(vm.calledBubble).to.be.false
-    vm.$destroy()
   })
 })
