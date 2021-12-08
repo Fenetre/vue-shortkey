@@ -1,7 +1,7 @@
 {
   "name": "@fenetre/vue3-shortkey",
   "description": "A plugin for VueJS 3.x accepts shortcuts globaly and in a single listener.",
-  "version": "4.0.0--rc.1",
+  "version": "4.0.0--rc.1.1",
   "author": "iFgR <ifgr.fagner@gmail.com>",
   "main": "dist/index.js",
   "license": "MIT",
